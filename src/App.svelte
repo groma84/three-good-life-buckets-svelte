@@ -1,36 +1,41 @@
 <script>
-	import './TailwindStyles.svelte';
-	
-	const message = 'Learn Svelte';
+	import "./TailwindStyles.svelte";
+	import { Router, Link, Route } from "svelte-routing";
+
+	import Index from "./pages/Index.svelte";
+	import Impressum from "./pages/Impressum.svelte";
+	import Graph from "./pages/Graph.svelte";
+	import Table from "./pages/Table.svelte";
+	import Settings from "./pages/Settings.svelte";
+	import Faq from "./pages/FAQ.svelte";
+	import Details from "./pages/Details.svelte";
+
+	export let url = "";
 </script>
 
-<style>
-	.App-logo {
-		animation: App-logo-scale infinite 1.6s ease-in-out alternate;
-	}
-	@keyframes App-logo-scale {
-		from {
-			transform: scale(1);
-		}
-		to {
-			transform: scale(1.06);
-		}
-	}
-</style>
+<Router {url}>
+	<nav>
+		<Link to="/">Index</Link>
+		<Link to="impressum">Impressum</Link>
+		<Link to="graph">Graph</Link>
+		<Link to="table">Table</Link>
+		<Link to="settings">Settings</Link>
+		<Link to="faq">FAQ</Link>
+		<Link to="details/2021-02-22">Details</Link>
+	</nav>
 
-<div class="text-center font-serif">
-	<header class="bg-gray-100 h-screen flex justify-center items-center flex-col text-3xl">
-		<img src="/logo.svg" class="App-logo pointer-events-none m-4 h-64" alt="logo" />
-		<p>
-			Edit <code>src/App.svelte</code> and save to reload.
-		</p>
-		<a
-			class="text-orange-500"
-			href="https://svelte.dev"
-			target="_blank"
-			rel="noopener noreferrer"
-		>
-			{message}
-		</a>
-	</header>
-</div>
+	<div>
+		<Route path="impressum" component={Impressum} />
+		<Route path="graph" component={Graph} />
+		<Route path="table" component={Table} />
+		<Route path="settings" component={Settings} />
+		<Route path="faq" component={Faq} />
+		<Route path="details/:date" let:params>
+			<Details date="{params.date}" />
+		</Route> 
+		<Route path="/"><Index /></Route>
+	</div>
+</Router>
+
+<style>
+</style>
