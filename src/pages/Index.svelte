@@ -26,38 +26,13 @@
         });
     }
 
-    async function l2() {
+    async function login() {
         runWithSupabase((supabase, data) => supabase.auth.signIn(data));
     }
 
-    async function login() {
-        unsub();
-
-        unsubscribe = supabaseStore.subscribe(async (supabase) => {
-            const { user, session, error } = await supabase.auth.signIn(
-                {
-                    email: username,
-                    password,
-                }
-            );
-
-            console.log("login", user, session, error);
-        });
-    }
-
+    
     async function signup() {
-        unsub();
-
-        unsubscribe = supabaseStore.subscribe(async (supabase) => {
-            const { user, session, error } = await supabase.auth.signUp(
-                {
-                    email: username,
-                    password,
-                }
-            );
-
-            console.log("signup", user, session, error);
-        });
+        runWithSupabase((supabase, data) => supabase.auth.signUp(data));
     }
 
     onDestroy(() => {
@@ -66,7 +41,7 @@
 </script>
 
 <h1>
-    <form on:submit|preventDefault={l2}>
+    <form on:submit|preventDefault={login}>
         <label for="username">E-Mail</label>
         <input
             id="username"
