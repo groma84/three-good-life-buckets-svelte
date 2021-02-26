@@ -1,24 +1,40 @@
 <script>
     import { onDestroy } from "svelte";
     import { supabaseStore } from "../stores/supabase";
-    import { createClient } from '@supabase/supabase-js'
 
     let username = "";
     let password = "";
 
     let unsubscribe;
 
-    async function login() {
-        console.log("login called");
-
+    function unsub() {
         if (unsubscribe) {
             unsubscribe();
         }
+    }
 
-        const options = { }
-        const supabase = createClient("https://esharnypcauxnoqqttsj.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYxNDE0NTk5OSwiZXhwIjoxOTI5NzIxOTk5fQ.T7Esw85b3idpoiv036-Q-c1-MEi_2vvezXA-GY7mKiU", options)
+    async function runWithSupabase(fn) {
+        unsub();
 
-        const { user, session, error } = await supabase.auth.signIn(
+        unsubscribe = supabaseStore.subscribe(async (supabase) => {
+            const { user, session, error } = await fn(supabase, {
+                    email: username,
+                    password,
+                });
+                
+            console.log("runWithSupabase", user, session, error);
+        });
+    }
+
+    async function l2() {
+        runWithSupabase((supabase, data) => supabase.auth.signIn(data));
+    }
+
+    async function login() {
+        unsub();
+
+        unsubscribe = supabaseStore.subscribe(async (supabase) => {
+            const { user, session, error } = await supabase.auth.signIn(
                 {
                     email: username,
                     password,
@@ -26,31 +42,31 @@
             );
 
             console.log("login", user, session, error);
+        });
+    }
 
-        // unsubscribe = supabaseStore.subscribe(async (store) => {
-        //     const { user, session, error } = await supabase.auth.signUp(
-        //         {
-        //             email: username,
-        //             password,
-        //         },
-        //         {
-        //             redirectTo: "http://localhost:8080/settings",
-        //         }
-        //     );
+    async function signup() {
+        unsub();
 
-        //     console.log("login", user, session, error);
-        // });
+        unsubscribe = supabaseStore.subscribe(async (supabase) => {
+            const { user, session, error } = await supabase.auth.signUp(
+                {
+                    email: username,
+                    password,
+                }
+            );
+
+            console.log("signup", user, session, error);
+        });
     }
 
     onDestroy(() => {
-        if (unsubscribe) {
-            unsubscribe();
-        }
+        unsub();
     });
 </script>
 
 <h1>
-    <form on:submit|preventDefault={login}>
+    <form on:submit|preventDefault={l2}>
         <label for="username">E-Mail</label>
         <input
             id="username"
@@ -71,6 +87,7 @@
         />
 
         <button type="submit">Login</button>
+        <button type="button" on:click="{signup}">Signup</button>
     </form>
 </h1>
 
