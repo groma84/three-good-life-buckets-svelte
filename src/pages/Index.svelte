@@ -1,69 +1,78 @@
 <script>
-    import { onDestroy } from "svelte";
-    import { supabaseStore } from "../stores/supabase";
+  import { onDestroy } from "svelte";
+  import { supabaseStore } from "../stores/supabase";
+  import { alerts } from "../stores/alerts";
 
-    let username = "";
-    let password = "";
+  let username = "";
+  let password = "";
 
-    let unsubscribe;
+  let unsubscribe;
 
-    function unsub() {
-        if (unsubscribe) {
-            unsubscribe();
-        }
+  function unsub() {
+    if (unsubscribe) {
+      unsubscribe();
     }
+  }
 
-    async function runWithSupabase(fn) {
-        unsub();
+  async function runWithSupabase(fn) {
+    unsub();
 
-        unsubscribe = supabaseStore.subscribe(async (supabase) => {
-            const { user, session, error } = await fn(supabase, {
-                    email: username,
-                    password,
-                });
-                
-            console.log("runWithSupabase", user, session, error);
-        });
-    }
+    unsubscribe = supabaseStore.subscribe(async (supabase) => {
+      const { user, session, error } = await fn(supabase, {
+        email: username,
+        password,
+      });
 
-    async function login() {
-        runWithSupabase((supabase, data) => supabase.auth.signIn(data));
-    }
-
-    
-    async function signup() {
-        runWithSupabase((supabase, data) => supabase.auth.signUp(data));
-    }
-
-    onDestroy(() => {
-        unsub();
+      console.log("runWithSupabase", user, session, error);
     });
+  }
+
+  async function login() {
+    runWithSupabase((supabase, data) => supabase.auth.signIn(data));
+  }
+
+  async function signup() {
+    runWithSupabase((supabase, data) => supabase.auth.signUp(data));
+  }
+
+  onDestroy(() => {
+    unsub();
+  });
+
+  function createSuccess() {
+    alerts.add({
+      type: "success",
+      message: "Registrierung erfolgreich!",
+    });
+  }
 </script>
 
+<button type="button" on:click={createSuccess}>Create success</button>
+
 <h1>
-    <form on:submit|preventDefault={login}>
-        <label for="username">E-Mail</label>
-        <input
-            id="username"
-            type="text"
-            placeholder="E-Mail"
-            bind:value={username}
-            maxlength="120"
-            required
-        />
+  <form on:submit|preventDefault={login}>
+    <label for="username">E-Mail</label>
+    <input
+      id="username"
+      type="text"
+      placeholder="E-Mail"
+      bind:value={username}
+      maxlength="120"
+      required
+    />
 
-        <label for="password">Passwort</label>
-        <input
-            id="password"
-            type="password"
-            bind:value={password}
-            maxlength="60"
-            required
-        />
+    <label for="password">Passwort</label>
+    <input
+      id="password"
+      type="password"
+      bind:value={password}
+      maxlength="60"
+      required
+    />
 
-        <button type="submit">Login</button>
-        <button type="button" on:click="{signup}">Signup</button>
-    </form>
+    <button type="submit">Login</button>
+    <button type="button" on:click={signup}>Signup</button>
+  </form>
 </h1>
 
 <style>
