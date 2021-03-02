@@ -1,6 +1,6 @@
 <script>
   import { onDestroy } from "svelte";
-  import { supabaseStore } from "../stores/supabase";
+  import { supabase } from "../stores/supabase";
   import { alerts } from "../stores/alerts";
 
   let username = "";
@@ -17,7 +17,7 @@
   async function runWithSupabase(fn) {
     unsub();
 
-    unsubscribe = supabaseStore.subscribe(async (supabase) => {
+    unsubscribe = supabase.subscribe(async (supabase) => {
       const { user, session, error } = await fn(supabase, {
         email: username,
         password,

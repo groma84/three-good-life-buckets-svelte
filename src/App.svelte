@@ -1,6 +1,7 @@
 <script>
   import "./TailwindStyles.svelte";
   import { Router, Link, Route } from "svelte-routing";
+  import { session } from "./stores/session";
 
   import Index from "./pages/Index.svelte";
   import Impressum from "./pages/Impressum.svelte";
@@ -12,33 +13,38 @@
   import Alerts from "./pages/Alerts.svelte";
 
   export let url = "";
+
 </script>
 
-<Router {url}>
-  <nav>
-    <Link to="/">Index</Link>
-    <Link to="impressum">Impressum</Link>
-    <Link to="graph">Graph</Link>
-    <Link to="table">Table</Link>
-    <Link to="settings">Settings</Link>
-    <Link to="faq">FAQ</Link>
-    <Link to="details/2021-02-22">Details</Link>
-  </nav>
+{#if $session}
+  <Router {url}>
+    <nav>
+      <Link to="/">Index</Link>
+      <Link to="impressum">Impressum</Link>
+      <Link to="graph">Graph</Link>
+      <Link to="table">Table</Link>
+      <Link to="settings">Settings</Link>
+      <Link to="faq">FAQ</Link>
+      <Link to="details/2021-02-22">Details</Link>
+    </nav>
 
-  <div>
-    <Alerts />
+    <div>
+      <Alerts />
 
-    <Route path="impressum" component={Impressum} />
-    <Route path="graph" component={Graph} />
-    <Route path="table" component={Table} />
-    <Route path="settings" component={Settings} />
-    <Route path="faq" component={Faq} />
-    <Route path="details/:date" let:params>
-      <Details date={params.date} />
-    </Route>
-    <Route path="/"><Index /></Route>
-  </div>
-</Router>
+      <Route path="impressum" component={Impressum} />
+      <Route path="graph" component={Graph} />
+      <Route path="table" component={Table} />
+      <Route path="settings" component={Settings} />
+      <Route path="faq" component={Faq} />
+      <Route path="details/:date" let:params>
+        <Details date={params.date} />
+      </Route>
+      <Route path="/"><Index /></Route>
+    </div>
+  </Router>
+{:else}
+  <Index />
+{/if}
 
 <style>
 </style>
