@@ -1,6 +1,6 @@
 <script>
   import "./TailwindStyles.svelte";
-  import { Router, Link, Route } from "svelte-routing";
+  import { Router, Route } from "svelte-routing";
   import { session } from "./stores/session";
 
   import Index from "./pages/Index.svelte";
@@ -11,26 +11,19 @@
   import Faq from "./pages/FAQ.svelte";
   import Details from "./pages/Details.svelte";
   import Alerts from "./pages/Alerts.svelte";
+  import Header from "./pages/Header.svelte";
 
   export let url = "";
-
 </script>
 
-{#if $session}
-  <Router {url}>
-    <nav>
-      <Link to="/">Index</Link>
-      <Link to="impressum">Impressum</Link>
-      <Link to="graph">Graph</Link>
-      <Link to="table">Table</Link>
-      <Link to="settings">Settings</Link>
-      <Link to="faq">FAQ</Link>
-      <Link to="details/2021-02-22">Details</Link>
-    </nav>
 
+<Router {url}>
+  <Header />
+
+  <Alerts />
+
+  {#if $session}
     <div>
-      <Alerts />
-
       <Route path="impressum" component={Impressum} />
       <Route path="graph" component={Graph} />
       <Route path="table" component={Table} />
@@ -41,10 +34,12 @@
       </Route>
       <Route path="/"><Index /></Route>
     </div>
-  </Router>
-{:else}
-  <Index />
-{/if}
+  {:else}
+    NO SESSION FOUND<br />
+
+    <Index />
+  {/if}
+</Router>
 
 <style>
 </style>
