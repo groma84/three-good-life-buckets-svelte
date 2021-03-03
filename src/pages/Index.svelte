@@ -1,10 +1,10 @@
 <script>
-  import { onDestroy } from "svelte";
-  import { supabase } from "../stores/supabase";
-  import { alerts } from "../stores/alerts";
+  import { onDestroy } from 'svelte';
+  import { supabase } from '../stores/supabase';
+  import { alerts } from '../stores/alerts';
 
-  let username = "";
-  let password = "";
+  let username = '';
+  let password = '';
 
   let unsubscribe;
 
@@ -22,8 +22,6 @@
         email: username,
         password,
       });
-
-      console.log("runWithSupabase", user, session, error);
     });
   }
 
@@ -41,22 +39,25 @@
 
   function createSuccess() {
     alerts.add({
-      type: "success",
-      message: "Registrierung erfolgreich!",
+      type: 'success',
+      message: 'Registrierung erfolgreich!',
     });
   }
 </script>
 
-<button type="button" on:click={createSuccess}>Create success</button>
+<style>
+</style>
+
+<button type="button" on:click="{createSuccess}">Create success</button>
 
 <h1>
-  <form on:submit|preventDefault={login}>
+  <form on:submit|preventDefault="{login}">
     <label for="username">E-Mail</label>
     <input
       id="username"
       type="text"
       placeholder="E-Mail"
-      bind:value={username}
+      bind:value="{username}"
       maxlength="120"
       required
     />
@@ -65,15 +66,12 @@
     <input
       id="password"
       type="password"
-      bind:value={password}
+      bind:value="{password}"
       maxlength="60"
       required
     />
 
     <button type="submit">Login</button>
-    <button type="button" on:click={signup}>Signup</button>
+    <button type="button" on:click="{signup}">Signup</button>
   </form>
 </h1>
-
-<style>
-</style>
