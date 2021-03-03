@@ -12,7 +12,6 @@
     "tailwindcss": "^2.0.1"
   },
   "devDependencies": {
-    "@efox/snowpack-plugin-webpack5": "^1.0.0",
     "@snowpack/app-scripts-svelte": "^2.0.0",
     "@snowpack/plugin-dotenv": "^2.0.4",
     "@snowpack/plugin-svelte": "^3.3.0",

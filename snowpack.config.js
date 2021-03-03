@@ -8,13 +8,12 @@ module.exports = {
   plugins: [
     "@snowpack/plugin-svelte",
     "@snowpack/plugin-dotenv",
-    [
-      '@efox/snowpack-plugin-webpack5',
-      {
-        /* see "Plugin Options" below */
-      },
-    ]
   ],
+  optimize: {
+    bundle: true,
+    minify: true,
+    target: 'es2018',
+  },
   packageOptions: {
     /* ... */
   },
