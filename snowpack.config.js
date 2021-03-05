@@ -1,5 +1,8 @@
 /** @type {import("snowpack").SnowpackUserConfig } */
 module.exports = {
+  routes: [
+    {"match": "routes", "src": ".*", "dest": "/index.html"}
+  ],
   mount: {
     src: { url: "/_dist_" },
     // Mount "public" to the root URL path ("/*") and serve files with zero transformations
@@ -10,7 +13,7 @@ module.exports = {
     "@snowpack/plugin-dotenv",
   ],
   optimize: {
-    bundle: true,
+    bundle: false,
     minify: true,
     target: 'es2018',
   },
