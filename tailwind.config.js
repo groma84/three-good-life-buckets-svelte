@@ -14,3 +14,6 @@ module.exports = {
   variants: {},
   plugins: [],
 };
+
+
+// TODO: Add color palette from https://coolors.co/c1cad6-d4adcf-856084-84e296-dde1e4

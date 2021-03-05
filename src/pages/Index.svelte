@@ -1,10 +1,10 @@
 <script>
-  import { onDestroy } from 'svelte';
-  import { supabase } from '../stores/supabase';
-  import { alerts } from '../stores/alerts';
+  import { onDestroy } from "svelte";
+  import { supabase } from "../stores/supabase";
+  import { alerts } from "../stores/alerts";
 
-  let username = '';
-  let password = '';
+  let username = "";
+  let password = "";
 
   let unsubscribe;
 
@@ -39,8 +39,8 @@
 
   function createSuccess() {
     alerts.add({
-      type: 'success',
-      message: 'Registrierung erfolgreich!',
+      type: "success",
+      message: "Registrierung erfolgreich!",
     });
   }
 </script>
@@ -48,30 +48,39 @@
 <style>
 </style>
 
-<button type="button" on:click="{createSuccess}">Create success</button>
+<div class="flex flex-col content-center max-w-sm">
+  <h1 class="font-serif text-2xl">Good Life Manager</h1>
 
-<h1>
   <form on:submit|preventDefault="{login}">
-    <label for="username">E-Mail</label>
-    <input
-      id="username"
-      type="text"
-      placeholder="E-Mail"
-      bind:value="{username}"
-      maxlength="120"
-      required
-    />
+    <ul>
+      <li>
+        <label for="username" class="w-24 inline-block">E-Mail</label>
+        <input
+          class="w-60 inline-block p-2 placeholder-blue-200 border-solid border-2 border-blue-700"
+          id="username"
+          type="text"
+          placeholder="E-Mail"
+          bind:value="{username}"
+          maxlength="120"
+          required
+        />
+      </li>
+      <li>
+        <label for="password" class="w-24 inline-block">Passwort</label>
+        <input
+          id="password"
+          type="password"
+          placeholder="Passwort"
+          bind:value="{password}"
+          maxlength="60"
+          required
+        />
+      </li>
+    </ul>
 
-    <label for="password">Passwort</label>
-    <input
-      id="password"
-      type="password"
-      bind:value="{password}"
-      maxlength="60"
-      required
-    />
-
-    <button type="submit">Login</button>
-    <button type="button" on:click="{signup}">Signup</button>
+    <div>
+      <button type="submit">Login</button>
+      <button type="button" on:click="{signup}">Signup</button>
+    </div>
   </form>
-</h1>
+</div>
